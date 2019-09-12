@@ -1,0 +1,19 @@
+ul {
+  list-style-type: none;
+}
+
+label {
+  display: block;
+}
+
+input {
+  display: block;
+}
+
+textarea {
+  display: block;
+}
+
+.user {
+  display: inline;
+}
