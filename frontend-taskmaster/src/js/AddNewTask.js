@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 export default function AddTask(props) {
+  let API = `${props.api}`;
   const [title, setTitle] = useState({});
   const [task, setTask] = useState({});
 
@@ -21,8 +22,6 @@ export default function AddTask(props) {
 
   const _setTask = e => {
     e.preventDefault();
-
-    const API = 'http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com/api/v1/tasks';
 
     fetch(API, 
       {

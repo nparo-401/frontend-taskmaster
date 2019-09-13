@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 export default function AssignUser(props) {
   const [assignee, setAssignee] = useState({});
+  let API = `${props.api}/${props.data.id}/assign/${assignee.assignee}`;
 
   const _handleChange = (e) => {
     let field = e.target.name;
@@ -11,8 +12,6 @@ export default function AssignUser(props) {
 
   const _assignUser = (e) => {
     e.preventDefault();
-    
-    let API = `http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com/api/v1/tasks/${props.data.id}/assign/${assignee.assignee}`;
 
     fetch(API, {
       method: 'PUT',
