@@ -5,10 +5,12 @@ import AssignUser from './js/AssignUser.js';
 import UpdateStatus from './js/UpdateStatus.js';
 import DeleteTask from './js/DeleteTask.js';
 import AddTask from './js/AddNewTask.js';
+import AddImage from './js/AddImage.js';
 
-const API = 'http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com/api/v1/tasks';
+
 
 function App() {
+  const API = 'http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com//api/v1/tasks';
   const [tasks, setTasks] = useState([]);
 
   function _getTasks() {
@@ -36,17 +38,20 @@ function App() {
                   <summary>
                     <span>{task.title}</span><br/>
                   </summary>
+                  <img src={task.image} alt={task.title}/>
                   <History history={task.history}/>
-                  <AssignUser data={task} reload={_getTasks}/>
-                  <UpdateStatus data={task} reload={_getTasks}/>
+                  <AssignUser api={API} data={task} reload={_getTasks}/>
+                  <UpdateStatus api={API} data={task} reload={_getTasks}/>
                   <br/>
-                  <DeleteTask data={task} reload={_getTasks}/>
+                  <AddImage api={API} data={task} reload={_getTasks}/>
+                  <br/>
+                  <DeleteTask api={API} data={task} reload={_getTasks}/>
                 </details>
               </li>
             )
           })}
         </ul>
-        <AddTask reload={_getTasks}/>
+        <AddTask api={API} reload={_getTasks}/>
       </div>
     </React.Fragment>
   );
