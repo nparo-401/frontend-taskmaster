@@ -7,8 +7,6 @@ import DeleteTask from './js/DeleteTask.js';
 import AddTask from './js/AddNewTask.js';
 import AddImage from './js/AddImage.js';
 
-
-
 function App() {
   const API = 'http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com//api/v1/tasks';
   const [tasks, setTasks] = useState([]);
@@ -22,6 +20,18 @@ function App() {
   }
 
   useEffect( _getTasks, []);
+
+  function _thumbnail(task) {
+    if(task.image !== null) {
+      return (
+        <React.Fragment>
+          <img src={task.image} alt={task.title}/>
+          <p></p>
+          <img src={'https://nparo-imagesresized' + task.image.substring(20,48) + 'resized-' + task.image.substring(48)} alt={task.title} />
+        </React.Fragment>
+      )
+    }
+  }
 
   return (
     <React.Fragment>
@@ -38,7 +48,7 @@ function App() {
                   <summary>
                     <span>{task.title}</span><br/>
                   </summary>
-                  <img src={task.image} alt={task.title}/>
+                  {_thumbnail(task)}
                   <History history={task.history}/>
                   <AssignUser api={API} data={task} reload={_getTasks}/>
                   <UpdateStatus api={API} data={task} reload={_getTasks}/>
