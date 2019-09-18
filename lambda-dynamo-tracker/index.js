@@ -1,9 +1,4 @@
-exports.handler = async (event) => {
-  console.log(event);
-  // TODO implement
-  const response = {
-      statusCode: 200,
-      body: JSON.stringify('Hello from Lambda!'),
-  };
-  return response;
+exports.handler = (event, context, callback) => {
+  console.log('Old Image:', event.Records[0].dynamodb.OldImage);
+  console.log('New Image:', event.Records[0].dynamodb.NewImage);
 };

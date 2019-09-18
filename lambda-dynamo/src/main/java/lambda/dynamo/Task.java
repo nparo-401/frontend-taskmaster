@@ -22,10 +22,11 @@ public class Task {
   }
 
   public Task (String title, String description) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.status = "Available";
-    this.assignee = null;
+    this.assignee = "none";
     this.history = new ArrayList<>();
   }
 
@@ -74,6 +75,14 @@ public class Task {
   public void setStatus (String status) {
     this.status = status;
   }
+  
+  public void updateStatus() {
+    if (this.status.equals("Assigned")) {
+      this.status = "Accepted";
+    } else if (this.status.equals("Accepted")) {
+      this.status = "Finished";
+    }
+  }
 
   @DynamoDBAttribute
   public String getAssignee () { return assignee; }
@@ -90,8 +99,7 @@ public class Task {
   }
 
   public void addHistory(){
-    History history = new History(new Date().toString(), this.status);
-    history.setAssignee(this.assignee);
+    History history = new History(this.status, this.assignee);
     this.history.add(history);
   }
 

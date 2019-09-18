@@ -2,6 +2,8 @@ package lambda.dynamo;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
+import java.util.Date;
+
 @DynamoDBDocument
 public class History {
   private String date;
@@ -9,11 +11,17 @@ public class History {
   private String assignee;
 
   public History(){}
-
-  public History(String date, String action) {
-    this.date = date;
+  
+  public History(String action) {
+    this.date = new Date().toString();
     this.action = action;
     this.assignee = "none";
+  }
+  
+  public History(String action, String assignee) {
+    this.date = new Date().toString();
+    this.action = action;
+    this.assignee = assignee;
   }
 
   public String getDate () {

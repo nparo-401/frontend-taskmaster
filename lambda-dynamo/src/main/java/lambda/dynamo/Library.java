@@ -10,6 +10,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.lambda.runtime.Context;
 
+import java.util.ArrayList;
+
 
 public class Library {
     private DynamoDB dynamoDB;
@@ -17,9 +19,38 @@ public class Library {
     private Regions REGION = Regions.US_WEST_2;
     
     public Task save(Task incomingTask, Context context) {
-        Task task = new Task(incomingTask.getTitle(), incomingTask.getDescription());
         final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.defaultClient();
         DynamoDBMapper ddbMapper = new DynamoDBMapper(ddb);
+        Task task = new Task(
+         incomingTask.getId(),
+         incomingTask.getTitle(),
+         incomingTask.getDescription(),
+         incomingTask.getStatus(),
+         incomingTask.getAssignee()
+        );
+        
+        if (incomingTask.getId() != null) {
+            Task t = ddbMapper.load(Task.class, incomingTask.getId());
+            ArrayList<History> oldHistory = t.getHistory();
+            History newHistory = new History();
+            if (!t.getAssignee().equals(incomingTask.getAssignee())) {
+                task.setStatus("Assigned");
+                newHistory = new History("Assigned", task.getAssignee());
+            }
+            if (t.getAssignee().equals(incomingTask.getAssignee())) {
+                if (task.getStatus().equals("Assigned")) {
+                    task.setStatus("Accepted");
+                } else {
+                    task.setStatus("Finished");
+                }
+                newHistory = new History(task.getStatus(), t.getAssignee());
+            }
+            oldHistory.add(newHistory);
+            task.setHistory(oldHistory);
+        } else {
+            task.addHistory();
+        }
+        
         ddbMapper.save(task);
         return task;
     }

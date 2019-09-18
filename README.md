@@ -20,3 +20,4 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 ### Lambda Functions
 * Added an image resizer function which saved the image from one bucket to another and resized it to a 50px X 50px image.
 * Sticking point: was using the wrong Node dependency within Lambda and was unable to use the function because of that.
+* Added a controller to add new database entries with lambda and an event trigger for the database to trigger when a change occurs.
