@@ -21,14 +21,28 @@ function App() {
 
   useEffect( _getTasks, []);
 
-  function _thumbnail(task) {
+  function _imager(task) {
     if(task.image !== null) {
       return (
         <React.Fragment>
-          <img src={task.image} alt={task.title}/>
-          <p></p>
-          <img src={'https://nparo-imagesresized' + task.image.substring(20,48) + 'resized-' + task.image.substring(48)} alt={task.title} />
+          {/* <img src={task.image} alt={task.title}/> */}
+          {/* <p></p> */}
+          {<img src={'https://nparo-imagesresized' + task.image.substring(20)} alt={task.title} />}
         </React.Fragment>
+      )
+    }
+  }
+
+  function _thumbnail(image, title) {
+    // console.log(image);
+    if(image !== null) {
+      _getTasks();
+      return (
+        <img src={image} alt={title} />
+      )
+    } else {
+      return (
+        <img src='https://placehold.it/50x50/111' alt={title} />
       )
     }
   }
@@ -48,7 +62,7 @@ function App() {
                   <summary>
                     <span>{task.title}</span><br/>
                   </summary>
-                  {_thumbnail(task)}
+                  {_imager(task)}
                   <History history={task.history}/>
                   <AssignUser api={API} data={task} reload={_getTasks}/>
                   <UpdateStatus api={API} data={task} reload={_getTasks}/>
