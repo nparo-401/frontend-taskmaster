@@ -7,10 +7,9 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.lambda.runtime.Context;
-
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class Library {
@@ -18,40 +17,22 @@ public class Library {
     private String DYNAMODB_TABLE_NAME = "taskmaster";
     private Regions REGION = Regions.US_WEST_2;
     
-    public Task save(Task incomingTask, Context context) {
+    public Task save(Task incomingTask) {
         final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.defaultClient();
         DynamoDBMapper ddbMapper = new DynamoDBMapper(ddb);
         Task task = new Task(
          incomingTask.getId(),
          incomingTask.getTitle(),
-         incomingTask.getDescription(),
-         incomingTask.getStatus(),
-         incomingTask.getAssignee()
+         incomingTask.getDescription()
         );
-        
-        if (incomingTask.getId() != null) {
-            Task t = ddbMapper.load(Task.class, incomingTask.getId());
-            ArrayList<History> oldHistory = t.getHistory();
-            History newHistory = new History();
-            if (!t.getAssignee().equals(incomingTask.getAssignee())) {
-                task.setStatus("Assigned");
-                newHistory = new History("Assigned", task.getAssignee());
-            }
-            if (t.getAssignee().equals(incomingTask.getAssignee())) {
-                if (task.getStatus().equals("Assigned")) {
-                    task.setStatus("Accepted");
-                } else {
-                    task.setStatus("Finished");
-                }
-                newHistory = new History(task.getStatus(), t.getAssignee());
-            }
-            oldHistory.add(newHistory);
-            task.setHistory(oldHistory);
-        } else {
-            task.addHistory();
-        }
         
         ddbMapper.save(task);
         return task;
+    }
+    
+    public List<Task> getTasks() {
+        final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.defaultClient();
+        DynamoDBMapper ddbMapper = new DynamoDBMapper(ddb);
+        return ddbMapper.scan(Task.class, new DynamoDBScanExpression());
     }
 }

@@ -8,11 +8,13 @@ import AddTask from './js/AddNewTask.js';
 import AddImage from './js/AddImage.js';
 
 function App() {
-  const API = 'http://taskmaster-env.3nz9fretef.us-west-2.elasticbeanstalk.com//api/v1/tasks';
+  const API = 'https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks';
   const [tasks, setTasks] = useState([]);
 
   function _getTasks() {
-    fetch(API)
+    fetch(API, {
+      mode: 'cors'
+    })
       .then( data => data.json() )
       .then( fetchedTasks => {
         setTasks(fetchedTasks);
