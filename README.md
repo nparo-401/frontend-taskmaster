@@ -29,6 +29,16 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/{user}/state
   * `PUT` - update the task's status by its `id` (user)
 
+### Lambda Functions
+* Java
+  * `save` - handles the `POST` request to add a new task to the database
+  * `getTasks` - handles the `GET` request to get all of the tasks from the database
+* JavaScript
+  * `getAllForOneUser` - handles the `GET` request to get all of the tasks for ONE user/assignee
+  * `taskDelete` - handles the `DELETE` request to remove a task from the database
+  * `updateAssignee` - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
+  * `changeStatus` - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
+
 ### Resources
 * Marisha Hoza
 * Fabian Brooks
@@ -41,13 +51,3 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * [Lambda Thumbnailer](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html)
 * [DynamozDB multi action](https://stackoverflow.com/questions/39382050/dynamodb-update-item-multi-action)
 * [Create, Read, Update, and Delete an Item](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html#GettingStarted.Js.03.03)
-
-### Lambda Functions
-* Java
-  * `save` - handles the `POST` request to add a new task to the database
-  * `getTasks` - handles the `GET` request to get all of the tasks from the database
-* JavaScript
-  * `getAllForOneUser` - handles the `GET` request to get all of the tasks for ONE user/assignee
-  * `taskDelete` - handles the `DELETE` request to remove a task from the database
-  * `updateAssignee` - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
-  * `changeStatus` - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
