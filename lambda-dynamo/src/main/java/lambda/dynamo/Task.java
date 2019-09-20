@@ -27,6 +27,7 @@ public class Task {
     this.taskStatus = "Available";
     this.assignee = "none";
     this.history = new ArrayList<>();
+    addHistory();
     this.image = "none";
   }
 
@@ -37,6 +38,7 @@ public class Task {
     this.taskStatus = taskStatus;
     this.assignee = assignee;
     this.history = new ArrayList<>();
+    addHistory();
     this.image = "none";
   }
 
