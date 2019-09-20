@@ -49,5 +49,5 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * [HTML Fieldset](https://www.w3schools.com/tags/tag_fieldset.asp)
 * [React Bootstrap](https://react-bootstrap.github.io/getting-started/introduction/)
 * [Lambda Thumbnailer](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html)
-* [DynamozDB multi action](https://stackoverflow.com/questions/39382050/dynamodb-update-item-multi-action)
+* [DynamoDB multi action](https://stackoverflow.com/questions/39382050/dynamodb-update-item-multi-action)
 * [Create, Read, Update, and Delete an Item](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html#GettingStarted.Js.03.03)
