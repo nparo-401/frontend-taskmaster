@@ -56,9 +56,11 @@ function App() {
                   <p>{task.description}</p>
                   <History history={task.history}/>
                   <AssignUser api={API} data={task} reload={_getTasks}/>
+                  <br/>
                   <UpdateStatus api={API} data={task} reload={_getTasks}/>
                   <br/>
-                  <AddImage api={API} data={task} reload={_getTasks}/>
+                  {/* TODO: add image path within the API and properly link the CORs */}
+                  {/* <AddImage api={API} data={task} reload={_getTasks}/> */}
                   <br/>
                   <DeleteTask api={API} data={task} reload={_getTasks}/>
                 </details>
