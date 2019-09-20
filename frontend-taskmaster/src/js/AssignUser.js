@@ -4,19 +4,21 @@ export default function AssignUser(props) {
   const [assignee, setAssignee] = useState({});
   let API = `${props.api}/${props.data.id}/assign/${assignee.assignee}`;
 
-  const _handleChange = (e) => {
-    let field = e.target.name;
-    let value = e.target.value;
-    setAssignee({[field]: value});
+  const _handleChange = e => {
+    setAssignee( {...assignee, [e.target.name]:e.target.value} );
   }
 
-  const _assignUser = (e) => {
+  const _assignUser = e => {
     e.preventDefault();
 
-    fetch(API, {
-      method: 'PUT',
-      mode: 'cors'
-    }).then( () => props.reload() );
+    fetch(API, 
+      {
+        method: 'PUT',
+        mode: 'cors'
+      }
+    )
+      .then( response => response.json() )
+      .then( () => props.reload() );
   }
 
   return (

@@ -2,22 +2,10 @@ import React, {useState} from 'react';
 
 export default function AddTask(props) {
   let API = `${props.api}`;
-  const [title, setTitle] = useState({});
-  const [task, setTask] = useState({});
+  const [formData, setFormData] = useState({});
 
-  let createTask = {
-    title: title.title,
-    description: task.description,
-  };
-
-  const _handleChange = (e) => {
-    let field = e.target.name;
-    let value = e.target.value;
-    if (field === 'title') {
-      setTitle({[field]: value});
-    } else {
-      setTask({[field]: value});
-    }
+  const _handleChange = e => {
+    setFormData( {...formData, [e.target.name]:e.target.value});
   }
 
   const _setTask = e => {
@@ -30,7 +18,7 @@ export default function AddTask(props) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(createTask)
+        body: JSON.stringify(formData)
       }
     )
       .then( response => response.json() )
