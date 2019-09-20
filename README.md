@@ -10,6 +10,25 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * [Frontend](http://taskmaster-np.s3-website-us-west-2.amazonaws.com/)
 * [Backend](https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev)
 
+### API Routes:
+* https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks
+  * `POST` - add a new task
+    * add a new task with a JSON object:
+    ```
+    {
+      "title": "ADD A TITLE HERE",
+      "description": "ADD A DESCRIPTION HERE"
+    }
+    ```
+  * `GET` - get all tasks
+* https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/{user}
+  * `GET` - get all tasks for a specific `assignee` (user)
+  * `DELETE` - delete a specific task by `id` (user)
+* https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/{user}/assign/{assignee}
+  * `PUT` - add an `assignee` (assignee) to a specific task by `id` (user)
+* https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/{user}/state
+  * `PUT` - update the task's status by its `id` (user)
+
 ### Resources
 * Marisha Hoza
 * Fabian Brooks
