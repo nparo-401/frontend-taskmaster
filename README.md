@@ -8,7 +8,7 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 
 ### Links
 * [Frontend](http://taskmaster-np.s3-website-us-west-2.amazonaws.com/)
-* [Backend](https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev)
+* [Backend](https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks)
 
 ### API Routes:
 * https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks
@@ -43,6 +43,11 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * [Create, Read, Update, and Delete an Item](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html#GettingStarted.Js.03.03)
 
 ### Lambda Functions
-* Added an image resizer function which saved the image from one bucket to another and resized it to a 50px X 50px image.
-* Sticking point: was using the wrong Node dependency within Lambda and was unable to use the function because of that.
-* Added a controller to add new database entries with lambda and an event trigger for the database to trigger when a change occurs.
+* Java
+  * `save` - handles the `POST` request to add a new task to the database
+  * `getTasks` - handles the `GET` request to get all of the tasks from the database
+* JavaScript
+  * `getAllForOneUser` - handles the `GET` request to get all of the tasks for ONE user/assignee
+  * `taskDelete` - handles the `DELETE` request to remove a task from the database
+  * `updateAssignee` - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
+  * `changeStatus` - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
