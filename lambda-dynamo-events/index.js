@@ -21,6 +21,10 @@ exports.handler = async (event, context) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
     body: JSON.stringify(data.Items)
   }
 };
@@ -31,9 +35,10 @@ exports.handlerAssignee = async (event, context) => {
     Key: {
       'id': `${event.pathParameters.user}`
     },
-    UpdateExpression: 'set assignee = :assignee',
+    UpdateExpression: 'set assignee = :assignee, taskStatus = :taskStatus',
     ExpressionAttributeValues: {
       ':assignee' : `${event.pathParameters.assignee}`,
+      ':taskStatus' : 'Assigned'
     },
     ReturnValues: "UPDATED_NEW"
   };
@@ -42,22 +47,80 @@ exports.handlerAssignee = async (event, context) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
     body: JSON.stringify(data)
   }
 };
+
+exports.handlerStatus = async (event, context) => {
+  let id = event.pathParameters.user;
+
+  let params = {
+    TableName: 'taskmaster',
+    Item: {
+      id: id
+    }
+  }
+
+  const records = await ddbClient.scan(params).promise();
+  let record;
+
+  records.Items.map( rec => {
+    if (rec.id === id) {
+      record = rec;
+    }
+  })
+
+  let newStatus;
+  if (record.taskStatus === 'Assigned') {
+    newStatus = 'Accepted';
+  } else if (record.taskStatus === 'Accepted') {
+    newStatus = 'Finished';
+  }
+
+  let taskUpdate = {
+    TableName: 'taskmaster',
+    Key: {
+      'id': `${event.pathParameters.user}`
+    },
+    UpdateExpression: 'set taskStatus = :taskStatus',
+    ExpressionAttributeValues: {
+      ':taskStatus' : newStatus,
+    },
+    ReturnValues: "UPDATED_NEW"
+  };
+
+  const data = await ddbClient.update(taskUpdate).promise();
+
+  return {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
+    body: JSON.stringify(data)
+  }
+}
 
 exports.handlerDeleter = async (event, context) => {
   let params = {
     TableName: 'taskmaster',
     Key: {
       'id': `${event.pathParameters.user}`
-    }
+    },
   };
 
   const data = await ddbClient.delete(params).promise();
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
     body: JSON.stringify(data)
   }
 };

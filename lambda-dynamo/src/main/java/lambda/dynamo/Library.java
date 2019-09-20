@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+
 import java.util.List;
 
 
@@ -25,7 +26,6 @@ public class Library {
          incomingTask.getTitle(),
          incomingTask.getDescription()
         );
-        
         ddbMapper.save(task);
         return task;
     }

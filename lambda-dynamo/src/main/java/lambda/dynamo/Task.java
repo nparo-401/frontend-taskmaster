@@ -6,14 +6,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @DynamoDBTable(tableName = "taskmaster")
 public class Task {
   private String id;
   private String title;
   private String description;
-  private String status;
+  private String taskStatus;
   private String assignee;
   private ArrayList<History> history;
   private String image;
@@ -25,18 +24,20 @@ public class Task {
     this.id = id;
     this.title = title;
     this.description = description;
-    this.status = "Available";
+    this.taskStatus = "Available";
     this.assignee = "none";
     this.history = new ArrayList<>();
+    this.image = "none";
   }
 
-  public Task (String id, String title, String description, String status, String assignee) {
+  public Task (String id, String title, String description, String taskStatus, String assignee) {
     this.id = id;
     this.title = title;
     this.description = description;
-    this.status = status;
+    this.taskStatus = taskStatus;
     this.assignee = assignee;
     this.history = new ArrayList<>();
+    this.image = "none";
   }
 
   @DynamoDBHashKey
@@ -68,19 +69,19 @@ public class Task {
   }
 
   @DynamoDBAttribute
-  public String getStatus () {
-    return status;
+  public String getTaskStatus () {
+    return taskStatus;
   }
 
-  public void setStatus (String status) {
-    this.status = status;
+  public void setTaskStatus (String taskStatus) {
+    this.taskStatus = taskStatus;
   }
   
   public void updateStatus() {
-    if (this.status.equals("Assigned")) {
-      this.status = "Accepted";
-    } else if (this.status.equals("Accepted")) {
-      this.status = "Finished";
+    if (this.taskStatus.equals("Assigned")) {
+      this.taskStatus = "Accepted";
+    } else if (this.taskStatus.equals("Accepted")) {
+      this.taskStatus = "Finished";
     }
   }
 
@@ -99,7 +100,7 @@ public class Task {
   }
 
   public void addHistory(){
-    History history = new History(this.status, this.assignee);
+    History history = new History(this.taskStatus, this.assignee);
     this.history.add(history);
   }
 
