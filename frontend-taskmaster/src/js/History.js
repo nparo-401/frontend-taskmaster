@@ -7,7 +7,8 @@ export default function History(props) {
         return (
           <li key={idx}>
             <span>Date: {record.date}</span><br/>
-            <span>Action: {record.action}</span>
+            <span>Action: {record.action}</span><br/>
+            <span>Assignee: {record.assignee}</span>
           </li>
         )
       })}
