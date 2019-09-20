@@ -21,6 +21,7 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 * [React Bootstrap](https://react-bootstrap.github.io/getting-started/introduction/)
 * [Lambda Thumbnailer](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html)
 * [DynamozDB multi action](https://stackoverflow.com/questions/39382050/dynamodb-update-item-multi-action)
+* [Create, Read, Update, and Delete an Item](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html#GettingStarted.Js.03.03)
 
 ### Lambda Functions
 * Added an image resizer function which saved the image from one bucket to another and resized it to a 50px X 50px image.
