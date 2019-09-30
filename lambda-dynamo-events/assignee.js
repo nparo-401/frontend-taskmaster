@@ -15,13 +15,14 @@ exports.updateAssignee = async (event) => {
     date: new Date().toString(),
     action: 'Assigned',
     assignee: assignee
-  }
+  };
   let params = {
     TableName: 'taskmaster',
     Item: {
       id: id
     }
-  }
+  };
+  
   const records = await ddbClient.scan(params).promise();
 
   records.Items.map( rec => {
@@ -44,6 +45,7 @@ exports.updateAssignee = async (event) => {
     },
     ReturnValues: "UPDATED_NEW"
   };
+
   const data = await ddbClient.update(taskUpdate).promise();
 
   return {

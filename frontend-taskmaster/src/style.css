@@ -17,3 +17,15 @@ textarea {
 .user {
   display: inline;
 }
+
+#flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.flex-item {
+  width: 30%;
+}

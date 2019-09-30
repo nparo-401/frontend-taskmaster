@@ -15,7 +15,7 @@ export default function AddImage(props) {
     e.preventDefault();
     
     fetch(API, {
-        method: 'POST',
+        method: 'PUT',
         mode: 'cors',
         body: form
       })
@@ -27,7 +27,7 @@ export default function AddImage(props) {
 
   return (
     <div>
-      <form onSubmit={_uploadFile} action={API} method="POST" encType="multipart/form-data">
+      <form onSubmit={_uploadFile}>
         <label>
           <span>Upload Image</span>
           <input onChange={_handleChange} name="file" type="file" />
