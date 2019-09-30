@@ -39,7 +39,7 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
   * [getAllForOneUser](./lambda-dynamo-events/oneUser.js) - handles the `GET` request to get all of the tasks for ONE user/assignee
   * [taskDelete](./lambda-dynamo-events/delete.js) - handles the `DELETE` request to remove a task from the database
   * [updateAssignee](./lambda-dynamo-events/assignee.js) - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
-  * [update task status](./lambda-dynamo-events/status.js) - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
+  * [changeStatus](./lambda-dynamo-events/status.js) - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
   * [subscribe](./lambda-sns/subscribe.js) - handles the `POST` request to subscribe to the SNS to allow messages to be received
   * [notify](./lambda-sns/notify.js) - handles the DynamoDB trigger which utilizes the SNS to send a message to any subscribed users when a task is marked as 'Finished'
 
