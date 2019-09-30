@@ -8,8 +8,7 @@ export default function UpdateStatus(props) {
       {
         method: 'PUT',
         mode: 'cors'
-      }
-    )
+      })
       .then( () => props.reload() );
   }
 

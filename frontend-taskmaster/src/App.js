@@ -6,6 +6,7 @@ import UpdateStatus from './js/UpdateStatus.js';
 import DeleteTask from './js/DeleteTask.js';
 import AddTask from './js/AddNewTask.js';
 import AddImage from './js/AddImage.js';
+import Subscribe from './js/Subscribe.js';
 
 function App() {
   const API = 'https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks';
@@ -68,7 +69,10 @@ function App() {
             )
           })}
         </ul>
-        <AddTask api={API} reload={_getTasks}/>
+        <div id="flex-container">
+          <AddTask api={API} reload={_getTasks}/>
+          <Subscribe api={API} reload={_getTasks}/>
+        </div>
       </div>
     </React.Fragment>
   );

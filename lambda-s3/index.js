@@ -3,22 +3,70 @@ var async = require('async');
 var AWS = require('aws-sdk');
 var gm = require('gm').subClass({ imageMagick: true }); // Enable ImageMagick integration.
 var util = require('util');
+const parser = require('lambda-multipart-parser');
 
 // constants
-var MAX_WIDTH  = 100;
-var MAX_HEIGHT = 100;
+var MAX_WIDTH  = 50;
+var MAX_HEIGHT = 50;
 
 // get reference to S3 client
 var s3 = new AWS.S3();
 
-exports.handler = function(event, context, callback) {
+AWS.config.update({ region: 'us-west-2' });
+
+const dynamodb = new AWS.DynamoDB();
+const ddbClient = new AWS.DynamoDB.DocumentClient();
+
+exports.uploadImage = async (event) => {
+  // const image = handler(event);
+  // const image = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+  // const id = event.pathParameters.user;
+  
+  // let params = {
+  //   TableName: 'taskmaster',
+  //   Item: {
+  //     id: id
+  //   }
+  // };
+  // const records = await ddbClient.scan(params).promise();
+
+  // records.Items.map( rec => {
+  //   if (rec.id === id) {
+      
+  //   }
+  // })
+
+  // let taskUpdate = {
+  //   TableName: 'taskmaster',
+  //   Key: {
+  //     'id': id
+  //   },
+  //   UpdateExpression: 'SET image = :image',
+  //   ExpressionAttributeValues: {
+  //     ':image' : image
+  //   },
+  //   ReturnValues: "UPDATED_NEW"
+  // };
+  // const data = await ddbClient.update(taskUpdate).promise();
+
+  return {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
+    body: JSON.stringify(decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')))
+  }
+}
+
+const handler = function(event, context, callback) {
 // Read options from the event.
   console.log('Reading options from event:\n', util.inspect(event, {depth: 5}));
   var srcBucket = event.Records[0].s3.bucket.name;
   // Object key may have spaces or unicode non-ASCII characters.
   var srcKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-  var dstBucket = srcBucket + 'resized';
-  var dstKey = 'resized-' + srcKey;
+  var dstBucket = 'nparo-imagesresized';
+  var dstKey = srcKey;
 
   // Sanity check: validate that source and destination are different buckets.
   if (srcBucket === dstBucket) {
@@ -50,13 +98,8 @@ exports.handler = function(event, context, callback) {
     },
     function transform(response, next) {
       gm(response.Body).size(function(err, size) {
-      // Infer the scaling factor to avoid stretching the image unnaturally.
-        var scalingFactor = Math.min(
-          MAX_WIDTH / size.width,
-          MAX_HEIGHT / size.height
-        );
-        var width  = scalingFactor * size.width;
-        var height = scalingFactor * size.height;
+        let width = MAX_WIDTH;
+        let height = MAX_HEIGHT;
 
         // Transform the image buffer in memory.
         this.resize(width, height)
@@ -75,7 +118,8 @@ exports.handler = function(event, context, callback) {
         Bucket: dstBucket,
         Key: dstKey,
         Body: data,
-        ContentType: contentType
+        ContentType: contentType,
+        ACL: 'public-read'
       },
       next);
     }
@@ -95,4 +139,5 @@ exports.handler = function(event, context, callback) {
 
     callback(null, 'message');
   });
+  return dstBucket + '/' + dstKey;
 };

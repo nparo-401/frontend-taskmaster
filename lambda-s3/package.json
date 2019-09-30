@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "async": "^3.1.0",
-    "gm": "^1.23.1"
+    "gm": "^1.23.1",
+    "lambda-multipart-parser": "0.0.2"
   },
   "devDependencies": {},
   "scripts": {

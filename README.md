@@ -21,6 +21,8 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
     }
     ```
   * `GET` - get all tasks
+* https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/subscribe
+  * `POST` - subscribe by phone number for an sms to the `TaskComplete` SNS service
 * https://cdmrys6wnc.execute-api.us-west-2.amazonaws.com/dev/tasks/{user}
   * `GET` - get all tasks for a specific `assignee` (user)
   * `DELETE` - delete a specific task by `id` (user)
@@ -31,13 +33,18 @@ TaskMaster allows a user to create a task, assign that task to a new user, move 
 
 ### Lambda Functions
 * Java
-  * `save` - handles the `POST` request to add a new task to the database
-  * `getTasks` - handles the `GET` request to get all of the tasks from the database
+  * [save](./lambda-dynamo/src/main/java/lambda/dynamo/Library.java) - handles the `POST` request to add a new task to the database
+  * [getTasks](./lambda-dynamo/src/main/java/lambda/dynamo/Library.java) - handles the `GET` request to get all of the tasks from the database
 * JavaScript
-  * `getAllForOneUser` - handles the `GET` request to get all of the tasks for ONE user/assignee
-  * `taskDelete` - handles the `DELETE` request to remove a task from the database
-  * `updateAssignee` - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
-  * `changeStatus` - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
+  * [getAllForOneUser](./lambda-dynamo-events/oneUser.js) - handles the `GET` request to get all of the tasks for ONE user/assignee
+  * [taskDelete](./lambda-dynamo-events/delete.js) - handles the `DELETE` request to remove a task from the database
+  * [updateAssignee](./lambda-dynamo-events/assignee.js) - handles the `PUT` request to add or update the assignee within a specific task. Also updates the history list with a new event
+  * [update task status](./lambda-dynamo-events/status.js) - handles the `PUT` request to change the status of a specific task. Also updates the history list with a new event
+  * [subscribe](./lambda-sns/subscribe.js) - handles the `POST` request to subscribe to the SNS to allow messages to be received
+  * [notify](./lambda-sns/notify.js) - handles the DynamoDB trigger which utilizes the SNS to send a message to any subscribed users when a task is marked as 'Finished'
+
+# Creation Steps
+* Follow these steps for the creation of the [SNS Lambda Functions](https://github.com/nparo-401/sns/blob/master/README.md)
 
 ### Resources
 * Marisha Hoza
